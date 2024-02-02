@@ -42,8 +42,12 @@
         
         let Repository1=0 , Repository2=0 ,RepositoryCount=0, compare=0; //  조건문 나올때마다 초기화 . 저장소
         let card = [],   img = [],      back=36;  //뒷장이름       //1. card를 담을 배열을 만든다.
-        for (let i = 0; i < 36; i++) { card[i] = i; }             //2. 배열 초기화하고.
-        card.sort(function (a, b) { return Math.random() - 0.5 }); //3. 섞는다.
+        for (let i = 0; i < 36; i++) { 
+            card[i] = i; 
+        }             //2. 배열 초기화하고.
+        card.sort(function (a, b) { 
+            return Math.random() - 0.5 
+        }); //3. 섞는다.
 
         let show = document.getElementById("showBtn");    show.onclick = showclick;
         let hide = document.getElementById("hideBtn");    hide.onclick = hideclick;
@@ -73,15 +77,21 @@
 
             if(RepositoryCount>=2){ // 카운트가 2이면 
                 console.log(Repository2-Repository1);
+
                 if((Repository2-Repository1)==18 || (Repository2-Repository1)==-18)
                     alert("정답입니다.");
+
                 Repository1=0,  Repository2=0,  RepositoryCount=0; //나갈때 초기화
             }
         } //cardclick
 
         function Frontcheck(tmp){ // 앞뒤체크 
-            if(tmp!=back){        return false;            }  
-            else {          console.log(tmp+"뒷면임");      }
+            if(tmp!=back){        
+                return false;            
+            }  
+            else {          
+                console.log(tmp+"뒷면임");      
+            }
         }
         function flip(tmp){ //console.log("뒤집기"+tmp+"번");   
             img[event.target.id].src = tmp+".png"; 
@@ -109,6 +119,6 @@
             for(let i=0;i<img.length;i++) 
             img[i].src = i+".png";
         }
-    }// end startGame 
+    }// end Game 
 </script>
 </html>
