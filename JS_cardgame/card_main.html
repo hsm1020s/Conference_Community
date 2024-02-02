@@ -1,0 +1,114 @@
+<!DOCTYPE html> <html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Card</title>
+    <style>  
+    img {width: 100px;height: 200px;display:  inline-block;}  
+    .b {
+        border: none;
+        color: black;
+        padding: 20px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 40px;
+        margin: 2px 1px;
+        cursor: pointer;
+    }          
+    </style>
+</head>
+<body>   <!-- document.body.innerHTML -->    </body>
+<script>
+    let imgSource = "";  // 문자열 더하기 시작
+    imgSource +=    "<button id="+  `"showBtn"` +"class="+ `b` +`>show</button>`; //쇼버튼
+    imgSource +=    "<button id="+  `"hideBtn"` +"class="+ `b` +`>hide</button>`; //하이드버튼
+    imgSource +=    "<button id="+  `"shuffleBtn"` +"class="+ `b` +`>shuffle</button>`; //셔플버튼
+    imgSource +=    "<button id="+  `"clearBtn"` +"class="+ `b` +`>sort</button>`; //클리어버튼
+
+    imgSource += "<br>"+"<br>"; // 버튼이후 줄바꿈 + 줄바꿈 한번더
+    imgSource += "<div id="+"board"+">" ;   //div img 시작
+
+    for(let q=0;q<=35;q++)  imgSource += "<img src="+`${q}.png`+" id="+`${q}`+">";
+
+    imgSource += "</div>" ;                 //div img 끝끝 
+    
+    document.body.innerHTML=imgSource; //body 넣어줌
+//----------------------------------------------------------------자스 시작
+    window.onload = function () { //main함수
+        startGame(); //게임 시작
+    }
+
+    function startGame() { //동작중
+        
+        let Repository1=0 , Repository2=0 ,RepositoryCount=0, compare=0; //  조건문 나올때마다 초기화 . 저장소
+        let card = [],   img = [],      back=36;  //뒷장이름       //1. card를 담을 배열을 만든다.
+        for (let i = 0; i < 36; i++) { card[i] = i; }             //2. 배열 초기화하고.
+        card.sort(function (a, b) { return Math.random() - 0.5 }); //3. 섞는다.
+
+        let show = document.getElementById("showBtn");    show.onclick = showclick;
+        let hide = document.getElementById("hideBtn");    hide.onclick = hideclick;
+        let shuffle = document.getElementById("shuffleBtn");   shuffle.onclick = shuffleclick;
+        let clear = document.getElementById("clearBtn");   clear.onclick = clearclick;
+
+        for (let i = 0; i <= 35; i++) {  //호출과 대입 체크
+            img[i] = document.getElementById(i); //이미지 가져와서
+            img[i].src = `${card[i]}.png`; //카드에 이미지 등록
+            img[i].onclick = cardclick; //해당카드에 이벤트 등록 // 호출과 대입의 차이를 알아야함
+        } 
+
+        function cardclick(event) { //카드클릭하면 동작하게끔 프론트체크,플립
+
+        let tmp = card[event.target.id];  //  컴페어 어디서하지 -> if문
+            if (Frontcheck(tmp)){ //  앞면이면 아무일도 일어나지 않는다.
+            } else {      
+                flip(tmp);  //  바꿔주고 
+            }    
+            RepositoryCount+=1;  console.log(RepositoryCount);
+            if(RepositoryCount==1) {
+                Repository1 = tmp; //console.log(Repository1);
+            }
+            else if(RepositoryCount==2) {
+                Repository2 = tmp; //console.log(Repository2);  
+            }
+
+            if(RepositoryCount>=2){ // 카운트가 2이면 
+                console.log(Repository2-Repository1);
+                if((Repository2-Repository1)==18 || (Repository2-Repository1)==-18)
+                    alert("정답입니다.");
+                Repository1=0,  Repository2=0,  RepositoryCount=0; //나갈때 초기화
+            }
+        } //cardclick
+
+        function Frontcheck(tmp){ // 앞뒤체크 
+            if(tmp!=back){        return false;            }  
+            else {          console.log(tmp+"뒷면임");      }
+        }
+        function flip(tmp){ //console.log("뒤집기"+tmp+"번");   
+            img[event.target.id].src = tmp+".png"; 
+        }
+
+        //버튼 작동 시작------------------------------------------------------------------------
+        function showclick(){ //원래 저장된 카드에서 i로 받아서 가져옴 
+            for(let i=0;i<img.length;i++) 
+            img[i].src = card[i]+".png"; 
+        } 
+        function hideclick(){ //전체 뒷면(36)으로 바꿈                    
+            for(let i=0;i<=img.length;i++) 
+            img[i].src = back+".png"; //back 이런거로 바꿔줘야함.
+        }
+        function shuffleclick(){ // card가 처음 show에 들어가니까 card를 섞어줘야함
+            card.sort(function (a, b) { 
+                return Math.random() - 0.5 
+            });  //1-> 전역 랜덤으로 변경
+            for(let i=0;i<img.length;i++) {
+            img[i].src = card[i]+".png";
+            img[i].src = back+".png"; //back 이런거로 바꿔줘야함.
+            }
+        }
+        function clearclick(){  // 원래 덱이 섞이지 않은 상태로 돌아감.
+            for(let i=0;i<img.length;i++) 
+            img[i].src = i+".png";
+        }
+    }// end startGame 
+</script>
+</html>
